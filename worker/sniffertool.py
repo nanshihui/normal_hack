@@ -11,14 +11,14 @@ import sys
 import nmap   
 import os
 import time
-import SQLTool
-import Sqldatatask
-import config
-import Sqldata
+import spidertool.SQLTool as SQLTool
+import spidertool.Sqldatatask as Sqldatatask
+import spidertool.config as config
+import spidertool.Sqldata as Sqldata
 from numpy.numarray.numerictypes import IsType
-import connectpool
-import portscantask
-import getLocationTool
+import spidertool.connectpool as connectpool
+import spidertool.portscantask as portscantask
+import spidertool.getLocationTool as getLocationTool
 reload(sys) # Python2.5 初始化后会删除 sys.setdefaultencoding 这个方法，我们需要重新载入   
 class SniffrtTool(object):
     '''
@@ -218,14 +218,6 @@ def callback_resultl(host, scan_result):
     finally:
             return result
     
-"""
-def callback_resultl(host, scan_result):
-    print scan_result
-    print scan_result['scan']
-    f = open('abc.xml','w+')
-    f.write(str(scan_result))
-    f.close()
-"""
 
 
 order=' -P0 -sV -sC  -sU  -O -v  -R -sT  '

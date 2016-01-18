@@ -1,12 +1,12 @@
 #!/usr/bin/python
 #coding:utf-8
-from ThreadTool import ThreadTool
+from spidertool.ThreadTool import ThreadTool
 import datetime
 import time
-import connectpool
-from TaskTool import TaskTool
-import  sniffertool
-import webtool
+import spidertool.connectpool
+from spidertool.TaskTool import TaskTool
+import  spidertool.sniffertool
+import spidertool.webtool
 from nmaptoolbackground.control import jobcontrol  
 from nmaptoolbackground.model import job  
 class snifferTask(TaskTool):
