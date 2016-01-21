@@ -73,3 +73,4 @@ if 'M' in str(e):
 	print 123123
 debug=Debug.getObject()
 debug.error("asd")
+
