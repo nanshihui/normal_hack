@@ -43,7 +43,7 @@ class SniffrtTool(object):
             print('Unexpected error:', sys.exc_info()[0])
         self.config=config.Config
         self.sqlTool=Sqldatatask.getObject()
-#         self.sqlTool=SQLTool.getObject()
+
         self.portscan=portscantask.getObject()
         self.getlocationtool=getLocationTool.getObject()
     def scaninfo(self,hosts='localhost', port='', arguments='',hignpersmission='0',callback=''):

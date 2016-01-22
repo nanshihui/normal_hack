@@ -74,6 +74,7 @@ class ThreadTool:
 	def push(self,req):
 		sizenum=len(req)
 		for urls in req:
+			print 'add'
 			self.q_request.put(urls)
 
 		threadnownum=0
