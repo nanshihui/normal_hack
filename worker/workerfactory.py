@@ -32,9 +32,20 @@ class WorkFactory(object):
             workarray=Job.Converttojobs(jobs['jobs']) 
             self.maintask.add_work(workarray)
             print 'get job'
+            self.has_work_left()
+            
+            
         else:
             print 'no job'
-  
+            time.sleep(5)
+            self.dowork()
+    def has_work_left(self):
+        if self.maintask.has_work_left():
+            time.sleep(5)
+            self.has_work_left()
+        else:
+            self.dowork()
+        
 class schedulecontrol:
     def __init__(self):
         self.scheduler = BackgroundScheduler()
@@ -47,14 +58,16 @@ class schedulecontrol:
         self.scheduler.add_job(event,'cron', day_of_week=day_of_week, hour=hour,minute=minute ,second=second,id=id)    
     def removeschedule(self,id):
         self.scheduler.remove_job(id)       
-if __name__ == "__main__":   
-    temp=schedulecontrol()
-    tempw=WorkFactory()
-    temp.addschedule(tempw.dowork,'0-7','0-23','0-59','*/5')
-    while True:
-        pass
-    
 
+if __name__ == "__main__":   
+#     temp=schedulecontrol()
+#     tempw=WorkFactory()
+#     temp.addschedule(tempw.dowork,'0-7','0-23','0-59','*/5')
+#     while True:
+#         pass
+#     
+    temp=WorkFactory()
+    temp.dowork()
 
 
 

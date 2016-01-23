@@ -8,4 +8,5 @@ encoding//spidertool/connectpool.py=utf-8
 encoding//spidertool/searchTask.py=utf-8
 encoding//worker/sniffertask.py=utf-8
 encoding//worker/sniffertool.py=utf-8
+encoding//worker/uploadworker.py=utf-8
 encoding//worker/workerfactory.py=utf-8
