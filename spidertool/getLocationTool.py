@@ -7,8 +7,11 @@ import re
 import webtool
 from TaskTool import TaskTool
 import os
-import config
+
 import json,SQLTool,Sqldatatask,Sqldata
+import config,webconfig
+from model import uploaditem
+from worker import uploadtask
 getlocationtaskinstance=None
 def getObject():
     global getlocationtaskinstance
@@ -39,9 +42,12 @@ class GetLocationTask(TaskTool):
         TaskTool.__init__(self,isThread,deamon=deamon)
         
         self.sqlTool=Sqldatatask.getObject()
-        self.islocalwork=islocalwork
+        
         self.config=config.Config
         self.set_deal_num(1)
+        self.islocalwork=islocalwork
+        self.uploadwork=uploadtask.getObject()
+        self.webconfig=webconfig.WebConfig
     def task(self,req,threadname):
         print 'the ip is '+req
         ip=req
@@ -59,9 +65,18 @@ class GetLocationTask(TaskTool):
 
         sqldatawprk=[]
         dic={"table":self.config.iptable,"select_params":['ip','country','country_id','area','area_id','region','region_id','city','city_id','county','county_id','isp','isp_id','updatetime'],"insert_values":insertdata,"extra":extra}
-        tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
-        sqldatawprk.append(tempwprk)
-        self.sqlTool.add_work(sqldatawprk)
+        if self.islocalwork==0:
+            tempdata={"func":'inserttableinfo_byparams',"dic":dic}
+            jsondata=uploaditem.UploadData(url=self.webconfig.upload_ip_info,way='POST',params=tempdata)
+            sqldatawprk.append(jsondata)
+            self.uploadwork.add_work(sqldatawprk)
+        else:
+            
+        
+        
+            tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
+            sqldatawprk.append(tempwprk)
+            self.sqlTool.add_work(sqldatawprk)
         
         time.sleep(0.1)
         ans=''

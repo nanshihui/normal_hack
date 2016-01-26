@@ -10,6 +10,7 @@ encoding//spidertool/config.py=utf-8
 encoding//spidertool/connectpool.py=utf-8
 encoding//spidertool/connecttool.py=utf-8
 encoding//spidertool/portscantask.py=utf-8
+encoding//spidertool/scapytool.py=utf-8
 encoding//spidertool/searchTask.py=utf-8
 encoding//worker/sniffertask.py=utf-8
 encoding//worker/sniffertool.py=utf-8

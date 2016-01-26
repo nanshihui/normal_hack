@@ -5,11 +5,14 @@ import datetime
 import time
 import connectpool
 import portscantool
-import SQLTool,config
+import SQLTool
 import Sqldata
 from TaskTool import TaskTool
 import MySQLdb
 import Sqldatatask
+import config,webconfig
+from model import uploaditem
+from worker import uploadtask
 portscantskinstance=None
 def getObject():
     global portscantskinstance
@@ -17,7 +20,7 @@ def getObject():
         portscantskinstance=PortscanTask(1)
     return portscantskinstance
 class PortscanTask(TaskTool):
-    def __init__(self,isThread=1,deamon=True):
+    def __init__(self,isThread=1,deamon=True,islocalwork=config.Config.islocalwork):
         TaskTool.__init__(self,isThread,deamon=deamon)
         
         self.sqlTool=Sqldatatask.getObject()
@@ -25,6 +28,9 @@ class PortscanTask(TaskTool):
         self.portscan=portscantool.Portscantool()
         self.config=config.Config
         self.set_deal_num(5)
+        self.islocalwork=islocalwork
+        self.uploadwork=uploadtask.getObject()
+        self.webconfig=webconfig.WebConfig
     def task(self,req,threadname):
         print threadname+'执行任务中'+str(datetime.datetime.now())
 
@@ -59,9 +65,18 @@ class PortscanTask(TaskTool):
         extra=' on duplicate key update  detail=\''+str(temp).replace("'","&apos;")+'\' ,head=\''+str(head)+'\', timesearch=\''+localtime+'\''
         sqldatawprk=[]
         dic={"table":self.config.porttable,"select_params":['ip','port','timesearch','detail','head'],"insert_values":insertdata,"extra":extra}
-        tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
-        sqldatawprk.append(tempwprk)
-        self.sqlTool.add_work(sqldatawprk)
+        
+        if self.islocalwork==0:
+            tempdata={"func":'inserttableinfo_byparams',"dic":dic}
+            jsondata=uploaditem.UploadData(url=self.webconfig.upload_port_info,way='POST',params=tempdata)
+            sqldatawprk.append(jsondata)
+            self.uploadwork.add_work(sqldatawprk)
+        else:
+        
+        
+            tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
+            sqldatawprk.append(tempwprk)
+            self.sqlTool.add_work(sqldatawprk)
 #         inserttableinfo_byparams(table=self.config.porttable,select_params=['ip','port','timesearch','detail'],insert_values=insertdata,extra=extra)
 
 
