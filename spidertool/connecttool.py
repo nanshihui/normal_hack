@@ -116,7 +116,14 @@ class ConnectTool:
 
 if __name__ == "__main__":		
 	p=ConnectTool()
-	w=p.getHTML('http://www.ijinshan.com')
+	workitem={}
+	workitem['a']=1
+	workdetail=[]
+	workdetail.append(workitem)
+	workdetail.append(workitem)
+	params={}
+	params['workdetail']=workdetail
+	w=p.getHTML('http://127.0.0.1:80/nmaptool/uploadipinfo/',way='POST',params=params)
  	print w
 	
 	

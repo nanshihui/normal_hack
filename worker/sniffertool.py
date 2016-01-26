@@ -14,11 +14,14 @@ import time
 import spidertool.SQLTool as SQLTool
 import spidertool.Sqldatatask as Sqldatatask
 import spidertool.config as config
+import spidertool.webconfig as webconfig
 import spidertool.Sqldata as Sqldata
 from numpy.numarray.numerictypes import IsType
 import spidertool.connectpool as connectpool
 import spidertool.portscantask as portscantask
 import spidertool.getLocationTool as getLocationTool
+import uploadtask 
+from model import uploaditem
 reload(sys) # Python2.5 初始化后会删除 sys.setdefaultencoding 这个方法，我们需要重新载入   
 class SniffrtTool(object):
     '''
@@ -26,7 +29,7 @@ class SniffrtTool(object):
     '''
 
 
-    def __init__(self,islocalwork=0):
+    def __init__(self,islocalwork=config.Config.islocalwork):
         '''
         Constructor
         '''
@@ -41,7 +44,9 @@ class SniffrtTool(object):
 
         except:
             print('Unexpected error:', sys.exc_info()[0])
+        self.uploadwork=uploadtask.getObject()
         self.config=config.Config
+        self.webconfig=webconfig.WebConfig
         self.sqlTool=Sqldatatask.getObject()
         self.islocalwork=islocalwork
         self.portscan=portscantask.getObject()
@@ -109,14 +114,20 @@ class SniffrtTool(object):
                         temphostname+=str(i.get('name','null'))+' '
                 
                     tempstate=str(tmp['scan'][host]['status'].get('state','null'))
-#                 print temphosts,tempvendor,temposfamily,temposgen,tempaccuracy,localtime
-
-#                 self.sqlTool.replaceinserttableinfo_byparams(table=self.config.iptable,select_params= ['ip','vendor','osfamily','osgen','accurate','updatetime','hostname','state'],insert_values= [(temphosts,tempvendor,temposfamily,temposgen,tempaccuracy,localtime,temphostname,tempstate)])         
-                    sqldatawprk=[]
-                    dic={"table":self.config.iptable,"select_params": ['ip','vendor','osfamily','osgen','accurate','updatetime','hostname','state'],"insert_values": [(temphosts,tempvendor,temposfamily,temposgen,tempaccuracy,localtime,temphostname,tempstate)]}
-                    tempwprk=Sqldata.SqlData('replaceinserttableinfo_byparams',dic)
-                    sqldatawprk.append(tempwprk)
-                    self.sqlTool.add_work(sqldatawprk)               
+                    if self.islocalwork==0:
+                        work=[]
+                        dic={"table":self.config.iptable,"select_params": ['ip','vendor','osfamily','osgen','accurate','updatetime','hostname','state'],"insert_values": [(temphosts,tempvendor,temposfamily,temposgen,tempaccuracy,localtime,temphostname,tempstate)]}
+                        tempdata={"func":'replaceinserttableinfo_byparams',"dic":dic}
+                        jsondata=uploaditem.UploadData(url=self.webconfig.upload_ip_info,way='POST',params=tempdata)
+                        work.append(jsondata)
+                        self.uploadwork.add_work(work)
+                   
+                    else:
+                        sqldatawprk=[]
+                        dic={"table":self.config.iptable,"select_params": ['ip','vendor','osfamily','osgen','accurate','updatetime','hostname','state'],"insert_values": [(temphosts,tempvendor,temposfamily,temposgen,tempaccuracy,localtime,temphostname,tempstate)]}
+                        tempwprk=Sqldata.SqlData('replaceinserttableinfo_byparams',dic)
+                        sqldatawprk.append(tempwprk)
+                        self.sqlTool.add_work(sqldatawprk)               
                 except Exception,e:
                     print 'nmap system error'+str(e)
                 
@@ -134,12 +145,21 @@ class SniffrtTool(object):
 
                         
 #                         self.sqlTool.replaceinserttableinfo_byparams(table=self.config.porttable,select_params= ['ip','port','timesearch','state','name','product','version','script'],insert_values= [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)])         
-                        sqldatawprk=[]
-                        dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
-                        tempwprk=Sqldata.SqlData('replaceinserttableinfo_byparams',dic)
-                        sqldatawprk.append(tempwprk)
-                        self.sqlTool.add_work(sqldatawprk)
-                        self.portscan.add_work([(tempportname,temphosts,tempport,tempportstate)])
+                        
+                        if self.islocalwork==0:
+                            work=[]
+                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
+                            tempdata={"func":'replaceinserttableinfo_byparams',"dic":dic}
+                            jsondata=uploaditem.UploadData(url=self.webconfig.upload_port_info,way='POST',params=tempdata)
+                            work.append(jsondata)
+                            self.uploadwork.add_work(work)
+                        else:
+                            sqldatawprk=[]
+                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
+                            tempwprk=Sqldata.SqlData('replaceinserttableinfo_byparams',dic)
+                            sqldatawprk.append(tempwprk)
+                            self.sqlTool.add_work(sqldatawprk)
+                            self.portscan.add_work([(tempportname,temphosts,tempport,tempportstate)])
 
                 elif 'udp' in  tmp['scan'][host].keys():
                     ports = tmp['scan'][host]['udp'].keys()
@@ -154,11 +174,20 @@ class SniffrtTool(object):
                         tempscript=str(tmp['scan'][host]['udp'][port].get('script',''))
                         
 #                         self.sqlTool.replaceinserttableinfo_byparams(table=self.config.porttable,select_params= ['ip','port','timesearch','state','name','product','version','script'],insert_values= [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)])         
-                        sqldatawprk=[]
-                        dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
-                        tempwprk=Sqldata.SqlData('replaceinserttableinfo_byparams',dic)
-                        sqldatawprk.append(tempwprk)
-                        self.sqlTool.add_work(sqldatawprk)
+                        
+                        if self.islocalwork==0:
+                            work=[]
+                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
+                            tempdata={"func":'replaceinserttableinfo_byparams',"dic":dic}
+                            jsondata=uploaditem.UploadData(url=self.webconfig.upload_port_info,way='POST',params=tempdata)
+                            work.append(jsondata)
+                            self.uploadwork.add_work(work)
+                        else:
+                            sqldatawprk=[]
+                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
+                            tempwprk=Sqldata.SqlData('replaceinserttableinfo_byparams',dic)
+                            sqldatawprk.append(tempwprk)
+                            self.sqlTool.add_work(sqldatawprk)
             except Exception,e:
                 print 'nmap error'+str(e)
             except IOError,e:

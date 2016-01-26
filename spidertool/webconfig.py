@@ -7,8 +7,8 @@ class WebConfig(object):
 	time_out=10
 	useragent= 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
 	Referer='http://drops.wooyun.org'
-	upload_ip_info='http://127.0.0.1:80/nmaptool/uploadipinfo'
-	upload_port_info='http://127.0.0.1:80/nmaptool/uploadportinfo'
+	upload_ip_info='http://127.0.0.1:80/nmaptool/uploadipinfo/'
+	upload_port_info='http://127.0.0.1:80/nmaptool/uploadportinfo/'
 	
 		
 

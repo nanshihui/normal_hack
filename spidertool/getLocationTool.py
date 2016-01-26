@@ -35,11 +35,11 @@ def getlocationjsondata(jsondata):
         return '0','0','0','0','0','0','0','0','0','0','0','0'
 
 class GetLocationTask(TaskTool):
-    def __init__(self,isThread=1,deamon=True):
+    def __init__(self,isThread=1,deamon=True,islocalwork=config.Config.islocalwork):
         TaskTool.__init__(self,isThread,deamon=deamon)
         
         self.sqlTool=Sqldatatask.getObject()
-
+        self.islocalwork=islocalwork
         self.config=config.Config
         self.set_deal_num(1)
     def task(self,req,threadname):
@@ -48,6 +48,8 @@ class GetLocationTask(TaskTool):
         jsondata=webtool.getLocationinfo(req)
         country,country_id,area,area_id,region,region_id,city,city_id,county,county_id,isp,isp_id=getlocationjsondata(jsondata)
         localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
+       
+        
         insertdata=[]
         
 
