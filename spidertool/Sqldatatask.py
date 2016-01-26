@@ -30,19 +30,7 @@ class SqlDataTask(TaskTool):
 # 		self.sqlhelp.closedb()
 		return ans
 
-if __name__ == "__main__":
-	links = [ 'http://www.bunz.edu.com','http://www.baidu.com','http://www.hao123.com','http://www.cctv.com','http://www.vip.com']
-	
-	f = searchTask()
-	f.set_deal_num(2)
-	f.add_work(links)
 
-	#f.start_task()
-	while f.has_work_left():
-		v,b=f.get_finish_work()
-		
-	while True:
-		pass
 
 
 

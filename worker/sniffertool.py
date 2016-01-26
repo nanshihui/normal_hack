@@ -26,7 +26,7 @@ class SniffrtTool(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self,islocalwork=0):
         '''
         Constructor
         '''
@@ -43,7 +43,7 @@ class SniffrtTool(object):
             print('Unexpected error:', sys.exc_info()[0])
         self.config=config.Config
         self.sqlTool=Sqldatatask.getObject()
-
+        self.islocalwork=islocalwork
         self.portscan=portscantask.getObject()
         self.getlocationtool=getLocationTool.getObject()
     def scaninfo(self,hosts='localhost', port='', arguments='',hignpersmission='0',callback=''):
@@ -187,37 +187,6 @@ class SniffrtTool(object):
         return temp
     def isrunning(self):
         return self.nma.has_host(self.host)
-def callback_resultl(host, scan_result):
-
-    print '———不触发这个函数———'
-    tmp=scan_result
-    result=''
-
-    try:
-        result =  u"ip地址:%s 主机名:%s  ......  %s\n" %(host,tmp['scan'][host]['hostname'],tmp['scan'][host]['status']['state'])
-        if 'osclass' in tmp['scan'][host].keys():
-            result +=u"系统信息 ： %s %s %s   准确度:%s  \n" % (str(tmp['scan'][host]['osclass']['vendor']),str(tmp['scan'][host]['osclass']['osfamily']),str(tmp['scan'][host]['osclass']['osgen']),str(tmp['scan'][host]['osclass']['accuracy']))
-        if 'tcp' in  tmp['scan'][host].keys():
-            ports = tmp['scan'][host]['tcp'].keys()
-            for port in ports:
-
-                portinfo = " port : %s  name:%s  state : %s  product : %s version :%s  script:%s \n" %(port,tmp['scan'][host]['tcp'][port]['name'],tmp['scan'][host]['tcp'][port]['state'],   tmp['scan'][host]['tcp'][port]['product'],tmp['scan'][host]['tcp'][port]['version'],tmp['scan'][host]['tcp'][port]['script'])
-                print portinfo
-                result+=  portinfo
-        elif 'udp' in  tmp['scan'][host].keys():
-            ports = tmp['scan'][host]['udp'].keys()
-            for port in ports:
-                portinfo = " port : %s  name:%s  state : %s  product : %s  version :%s  script:%s \n" %(port,tmp['scan'][host]['udp'][port]['name'],tmp['scan'][host]['udp'][port]['state'],   tmp['scan'][host]['udp'][port]['product'],tmp['scan'][host]['udp'][port]['version'],tmp['scan'][host]['udp'][port]['script'])
-                result += portinfo
-    except Exception,e:
-        print e
-    except IOError,e:
-        print '错误IOError'+str(e)
-    except KeyError,e:
-        print '不存在该信息'+str(e)
-    finally:
-            return result
-    
 
 
 order=' -P0 -sV -sC  -sU  -O -v  -R -sT  '
