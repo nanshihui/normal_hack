@@ -12,6 +12,7 @@ encoding//spidertool/connecttool.py=utf-8
 encoding//spidertool/portscantask.py=utf-8
 encoding//spidertool/scapytool.py=utf-8
 encoding//spidertool/searchTask.py=utf-8
+encoding//worker/censys_s.py=utf-8
 encoding//worker/sniffertask.py=utf-8
 encoding//worker/sniffertool.py=utf-8
 encoding//worker/uploadtask.py=utf-8

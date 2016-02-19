@@ -12,7 +12,7 @@ import MySQLdb
 import Sqldatatask
 import config,webconfig
 from model import uploaditem
-from worker import uploadtask
+
 portscantskinstance=None
 def getObject():
     global portscantskinstance
@@ -29,6 +29,7 @@ class PortscanTask(TaskTool):
         self.config=config.Config
         self.set_deal_num(5)
         self.islocalwork=islocalwork
+        from worker import uploadtask
         self.uploadwork=uploadtask.getObject()
         self.webconfig=webconfig.WebConfig
     def task(self,req,threadname):
@@ -90,18 +91,8 @@ class PortscanTask(TaskTool):
         return ans
 
 if __name__ == "__main__":
-    links = [ 'http://www.bunz.edu.com','http://www.baidu.com','http://www.hao123.com','http://www.cctv.com','http://www.vip.com']
-    
-    f = searchTask()
-    f.set_deal_num(2)
-    f.add_work(links)
 
-    #f.start_task()
-    while f.has_work_left():
-        v,b=f.get_finish_work()
-        
-    while True:
-        pass
+    pass
 
 
 

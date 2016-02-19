@@ -35,9 +35,9 @@ class UploadTask(TaskTool):
         TaskTool.__init__(self,isThread)
         self.connectpool=connectpool.getObject()
     def task(self,req,threadname):
-        way=req.getway()
-        params=req.getparams()
-        url=req.geturl()
+        way=req.getWay()
+        params=req.getParams()
+        url=req.getURL()
         head,work_result=self.connectpool.getConnect(url,way, params)
 
         return work_result

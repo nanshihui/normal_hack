@@ -66,12 +66,40 @@ if __name__ == "__main__":
 #     while True:
 #         pass
 #     
-    temp=WorkFactory()
-    temp.dowork()
+ 
+    
+    
+    
+#     temp=WorkFactory()
+#     temp.dowork()
 
 
 
-
-
-
-            
+#test
+  
+# 
+    jobs=[]
+    jobname='jobname'
+    jobaddress='127.0.0.1'
+    priority=''
+    starttime='2017-09-09'
+    username='admin'
+    jobport=''
+    jobstatus='1'
+    jobid='123123123'
+    result=''
+    endtime=''
+    createtime=''
+    argument=''
+    forcesearch=''
+    isjob=''
+    job=Job(jobname,jobaddress,priority,starttime,username,jobport,jobstatus,jobid,result,endtime,createtime,argument,forcesearch,isjob)
+    jobs.append(job)
+ 
+    maintask=sniffertask.snifferTask()
+    maintask.add_work(jobs)
+    while True:
+        pass
+  
+  
+              

@@ -19,7 +19,7 @@ import spidertool.Sqldata as Sqldata
 from numpy.numarray.numerictypes import IsType
 import spidertool.connectpool as connectpool
 import spidertool.portscantask as portscantask
-import spidertool.getLocationTool as getLocationTool
+
 import uploadtask 
 from model import uploaditem
 reload(sys) # Python2.5 初始化后会删除 sys.setdefaultencoding 这个方法，我们需要重新载入   
@@ -50,6 +50,7 @@ class SniffrtTool(object):
         self.sqlTool=Sqldatatask.getObject()
         self.islocalwork=islocalwork
         self.portscan=portscantask.getObject()
+        import spidertool.getLocationTool as getLocationTool
         self.getlocationtool=getLocationTool.getObject()
     def scaninfo(self,hosts='localhost', port='', arguments='',hignpersmission='0',callback=''):
         if callback=='': 
