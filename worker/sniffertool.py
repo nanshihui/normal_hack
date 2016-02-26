@@ -149,14 +149,14 @@ class SniffrtTool(object):
                         
                         if self.islocalwork==0:
                             work=[]
-                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
+                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script','portnumber'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript,str(tempport))]}
                             tempdata={"func":'replaceinserttableinfo_byparams',"dic":dic}
                             jsondata=uploaditem.UploadData(url=self.webconfig.upload_port_info,way='POST',params=tempdata)
                             work.append(jsondata)
                             self.uploadwork.add_work(work)
                         else:
                             sqldatawprk=[]
-                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
+                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script','portnumber'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript,str(tempport))]}
                             tempwprk=Sqldata.SqlData('replaceinserttableinfo_byparams',dic)
                             sqldatawprk.append(tempwprk)
                             self.sqlTool.add_work(sqldatawprk)
@@ -178,14 +178,14 @@ class SniffrtTool(object):
                         
                         if self.islocalwork==0:
                             work=[]
-                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
+                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script','portnumber'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript,str(tempport))]}
                             tempdata={"func":'replaceinserttableinfo_byparams',"dic":dic}
                             jsondata=uploaditem.UploadData(url=self.webconfig.upload_port_info,way='POST',params=tempdata)
                             work.append(jsondata)
                             self.uploadwork.add_work(work)
                         else:
                             sqldatawprk=[]
-                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript)]}
+                            dic={"table":self.config.porttable,"select_params": ['ip','port','timesearch','state','name','product','version','script','portnumber'],"insert_values": [(temphosts,tempport,localtime,tempportstate,tempportname,tempproduct,tempportversion,tempscript,str(tempport))]}
                             tempwprk=Sqldata.SqlData('replaceinserttableinfo_byparams',dic)
                             sqldatawprk.append(tempwprk)
                             self.sqlTool.add_work(sqldatawprk)
