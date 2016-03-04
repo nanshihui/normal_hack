@@ -104,12 +104,20 @@ class SniffrtTool(object):
                 localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
                 self.getlocationtool.add_work([temphosts])
                 try :
+                    tempvendor='null'
+                    temposfamily='null'
+                    temposgen='null'
+                    tempaccuracy='null'
+                    if len(tmp['scan'][host]['osmatch'])>0 and len(tmp['scan'][host]['osmatch'][0]['osclass'])>0:
+                        tempvendor=str(tmp['scan'][host]['osmatch'][0]['osclass'][0].get('vendor','null'))
+
+                        temposfamily=str(tmp['scan'][host]['osmatch'][0]['osclass'][0].get('osfamily','null'))
+              
+                        temposgen=str(tmp['scan'][host]['osmatch'][0]['osclass'][0].get('osgen','null'))
+                  
+                        tempaccuracy=str(tmp['scan'][host]['osmatch'][0]['osclass'][0].get('accuracy','null'))
                                             
-                    tempvendor=str(tmp['scan'][host]['osmatch'][0]['osclass'][0].get('vendor','null'))
-                    temposfamily=str(tmp['scan'][host]['osmatch'][0]['osclass'][0].get('osfamily','null'))
-                    temposgen=str(tmp['scan'][host]['osmatch'][0]['osclass'][0].get('osgen','null'))
-                    tempaccuracy=str(tmp['scan'][host]['osmatch'][0]['osclass'][0].get('accuracy','null'))
-                    
+        
                     temphostname=''
                     for i in tmp['scan'][host]['hostnames']:
                         temphostname+=str(i.get('name','null'))+' '
