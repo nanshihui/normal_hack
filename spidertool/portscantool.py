@@ -8,6 +8,7 @@ import os
 import SQLTool
 import config
 import socket
+from template_identify import port_identify
 portway = {'sip':'INVITE  world \r\n\r\n','2':'8080','3':'443','4':'22','5':'23'}  
 class Portscantool:
     def __init__(self):
@@ -16,20 +17,26 @@ class Portscantool:
         self.config=config.Config
 
     def do_scan(self,ip,port,name):
+        keywords=name
+        hackinfo=''
+        reply=''
         try:
-
-            self.socketclient=  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socketclient.connect((ip,int(port)))
+            head,ans,keywords,hackinfo=port_identify.port_deal(ip=ip,port=port,name=name)
+            if ans==None:
+                self.socketclient=  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.socketclient.connect((ip,int(port)))
 
 #             message = "GET / HTTP/1.1\r\nHost: oschina.net\r\n\r\n"
-            message =portway.get(name,"GET  world \r\n\r\n")
-            self.socketclient.sendall(message)
-            reply = self.socketclient.recv(4096)
-            self.socketclient.close()
-            return 'reply',reply
+                message =portway.get(name,"GET  world \r\n\r\n")
+                self.socketclient.sendall(message)
+                reply = self.socketclient.recv(4096)
+                self.socketclient.close()
+                return 'reply info:  ',reply,keywords,hackinfo
+            else:
+                return 'reply info:  ',ans,keywords,hackinfo
         except Exception, msg:
             print 'Failed to create socket. Error code: ' + str(msg)
-            return 'error','error'
+            return 'error info:','error',keywords,hackinfo
 
    
 if __name__ == "__main__":
