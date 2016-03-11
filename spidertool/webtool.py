@@ -28,7 +28,6 @@ def object2dict(obj):
 	d['__module__'] = obj.__module__
 	d.update(obj.__dict__)
 	return d
- 
 def dict2object(d):
     #convert dict to object
     if'__class__' in d:
@@ -69,4 +68,10 @@ def getLocationinfo(ip):
 		if httpClient:
 			httpClient.close()
 		return json.loads(response_data)
+def md5(str):
+	import hashlib
+	m = hashlib.md5()   
+	m.update(str)
+	return m.hexdigest()
+
 	

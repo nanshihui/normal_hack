@@ -64,10 +64,12 @@ class PortscanTask(TaskTool):
         localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
         insertdata=[]
         temp=str(ans)
-
-        insertdata.append((ip,port,localtime,str(head),str(temp).replace("'","&apos;"),str(port),hackinfo.replace("'","&apos;"),keywords))
+        head=SQLTool.escapeword(head)
+        msg=SQLTool.escapeword(temp)
+        hackinfomsg=SQLTool.escapeword(hackinfo)
+        insertdata.append((ip,port,localtime,str(head),msg,str(port),hackinfomsg,keywords))
                                          
-        extra=' on duplicate key update  detail=\''+str(temp).replace("'","&apos;")+'\' ,head=\''+str(head)+'\', timesearch=\''+localtime+'\''
+        extra=' on duplicate key update  detail=\''+msg+'\' ,head=\''+str(head)+'\', timesearch=\''+localtime+'\',hackinfo=\''+hackinfomsg+'\',keywords=\''+str(keywords)+'\''
         sqldatawprk=[]
         dic={"table":self.config.porttable,"select_params":['ip','port','timesearch','detail','head','portnumber','hackinfo','keywords'],"insert_values":insertdata,"extra":extra}
         

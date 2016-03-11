@@ -5,7 +5,7 @@ def sipdeal(ip='',port='',name=''):
     print 'this is sipdeal'
 
 
-def mysql(ip='',port='',name=''):
+def mysql(ip='',port='3306',name=''):
     head=''
     ans=None
     keywords=''
@@ -15,7 +15,7 @@ def mysql(ip='',port='',name=''):
     passwd=['root','123456','admin','','12345']
     for i in passwd:
         try:
-            con= MySQLdb.connect(host=ip,user='root',passwd=i)
+            con= MySQLdb.connect(host=ip,port=int(port),user='root',passwd=i)
             hackinfo= ' the password is :'+i
             print ip+hackinfo
             keywords='mysql'

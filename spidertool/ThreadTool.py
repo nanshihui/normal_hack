@@ -46,6 +46,18 @@ class ThreadTool:
 		self.default_object=add_init_object
 	def add_task(self,job):
 		self.job=job
+#获取当前剩余的任务，用于集群操做
+	def get_work(self):
+		tmparray=[]
+		if self.q_request.qsize()>0:
+			try:
+				req = self.q_request.get(block=True,timeout=4)
+				tmparray.append(req)
+				return tmparray
+			except:
+				return tmparray
+		else:
+			return tmparray
 	def start(self):
 		sizenumber=min(self.threads_num,self.q_request.qsize())
 		if self.isThread==1:
@@ -74,7 +86,6 @@ class ThreadTool:
 	def push(self,req):
 		sizenum=len(req)
 		for urls in req:
-			print 'add'
 			self.q_request.put(urls)
 
 		threadnownum=0
