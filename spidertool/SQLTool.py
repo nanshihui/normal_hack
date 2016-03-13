@@ -196,8 +196,8 @@ class DBmanager:
 					sql=sql+'%s'+')'			
 				else:
 					return False
-
-# 				print sql
+				print insert_values
+				print sql
 				returnmeg=None
 				try:
 					returnmeg=self.__cur.executemany(sql,insert_values)
@@ -328,9 +328,9 @@ class DBmanager:
 						sql=sql+updatevalue[o]+' =  %s '+'  ,'	
 					sql=sql+updatevalue[ulen-1]+'  =%s ' 
 				sql+=extra
-# 				print sql
+				print sql
 				
-				
+				print insert_values
 				returnmeg=None
 				try:
 					returnmeg=self.__cur.executemany(sql,insert_values)
@@ -372,6 +372,14 @@ def escapeword(word):
 	else:
 		msg=''
 	return msg
+def escapewordby(word):
+	if word is None:
+		return ''
+	else:
+		
+		content=''
+		content = str(MySQLdb.escape_string(str(word)))
+		return content
 if __name__ == "__main__":
 	SQLtool=DBmanager()
 	SQLtool.connectdb()

@@ -12,13 +12,19 @@ import Sqldatatask
 import Sqldata
 import   trace 
 import getLocationTool
+zmapinstance=None
+def getObject():
+    global zmapinstance
+    if zmapinstance is None:
+        zmapinstance=Zmaptool()
+    return zmapinstance
 portname = {'80':'http','8080':'http','443':'https','22':'telnet','3306':'mysql','873':'rsync'} 
 class Zmaptool:
     def __init__(self):
 #         self.sqlTool=SQLTool.getObject()
         self.sqlTool=Sqldatatask.getObject()
         self.config=config.Config
-        self.portscan=portscantask.getObject()
+        self.portscan=portscantask.PortscanTask(1)
         self.getlocationtool=getLocationTool.getObject()
 # returnmsg =subprocess.call(["ls", "-l"],shell=True)
     def do_scan(self,port='80',num='10',needdetail='0'):
@@ -41,9 +47,30 @@ class Zmaptool:
             localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
             insertdata=[]
             jobs=[]
+            p=0
             for i in list:
                 insertdata.append((str(i),port,localtime,'open',str(port)))
-                self.getlocationtool.add_work([str(i)])
+                p=p+1
+                if p==20 or i==list[len(list)-1]:
+                    extra=' on duplicate key update  state=\'open\' , timesearch=\''+localtime+'\''
+            
+            
+
+                    sqldatawprk=[]
+                    dic={"table":self.config.porttable,"select_params":['ip','port','timesearch','state','portnumber'],"insert_values":insertdata,"extra":extra}
+                    tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
+                    sqldatawprk.append(tempwprk)
+                    self.sqlTool.add_work(sqldatawprk)                    
+
+                    p=0
+                    insertdata=[]
+                    if needdetail!='0':
+                        tasktotally=sniffertask.getObject()
+
+                        tasktotally.add_work(jobs)
+                        jobs=[]
+                
+
 
                 if needdetail=='0':
                     global portname
@@ -53,20 +80,9 @@ class Zmaptool:
                     
                     ajob=job.Job(jobaddress=str(i),jobport='',forcesearch='0',isjob='0')
                     jobs.append(ajob)
-            if needdetail!='0':
-                tasktotally=sniffertask.getObject()
 
-                tasktotally.add_work(jobs)
-            extra=' on duplicate key update  state=\'open\' , timesearch=\''+localtime+'\''
-            
-            
-#             self.sqlTool.inserttableinfo_byparams(table=self.config.porttable,select_params=['ip','port','timesearch','state'],insert_values=insertdata,extra=extra)
-            sqldatawprk=[]
-            dic={"table":self.config.porttable,"select_params":['ip','port','timesearch','state','portnumber'],"insert_values":insertdata,"extra":extra}
-            tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
-            sqldatawprk.append(tempwprk)
-            self.sqlTool.add_work(sqldatawprk)       
-#             self.sqlTool.closedb()
+     
+
 
 
 if __name__ == "__main__":

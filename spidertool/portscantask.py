@@ -20,7 +20,7 @@ def getObject():
         portscantskinstance=PortscanTask(1)
     return portscantskinstance
 class PortscanTask(TaskTool):
-    def __init__(self,isThread=1,deamon=True,islocalwork=config.Config.islocalwork):
+    def __init__(self,isThread=1,deamon=False,islocalwork=config.Config.islocalwork):
         TaskTool.__init__(self,isThread,deamon=deamon)
         
         self.sqlTool=Sqldatatask.getObject()
@@ -67,6 +67,7 @@ class PortscanTask(TaskTool):
         head=SQLTool.escapeword(head)
         msg=SQLTool.escapeword(temp)
         hackinfomsg=SQLTool.escapeword(hackinfo)
+        keywords=SQLTool.escapewordby(keywords)
         insertdata.append((ip,port,localtime,str(head),msg,str(port),hackinfomsg,keywords))
                                          
         extra=' on duplicate key update  detail=\''+msg+'\' ,head=\''+str(head)+'\', timesearch=\''+localtime+'\',hackinfo=\''+hackinfomsg+'\',keywords=\''+str(keywords)+'\''

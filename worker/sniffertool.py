@@ -94,15 +94,10 @@ class SniffrtTool(object):
             host=i
             result=''
             try:
-#                 result =  u"ip地址:%s 主机名:%s  ......  %s\n" %(host,tmp['scan'][host].get('hostnames','null'),tmp['scan'][host]['status'].get('state','null'))
-#                 self.sqlTool.connectdb()
-#                 print tmp['scan'][host].get('hostname','null')
-#                 if 'osclass' in tmp['scan'][host].keys():
-#                     result +=u"系统信息 ： %s %s %s   准确度:%s  \n" % (str(tmp['scan'][host]['osclass'].get('vendor','null')),str(tmp['scan'][host]['osclass'].get('osfamily','null')),str(tmp['scan'][host]['osclass'].get('osgen','null')),str(tmp['scan'][host]['osclass'].get('accuracy','null')))
-#                 print result
+
                 temphosts=str(host)
                 localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
-                self.getlocationtool.add_work([temphosts])
+                self.getlocationtool.add_work([temphosts])#查询ip地址
                 try :
                     tempvendor='null'
                     temposfamily='null'

@@ -12,7 +12,8 @@ def mysql(ip='',port='3306',name=''):
     hackinfo=''
     import MySQLdb
     con=None
-    passwd=['root','123456','admin','','12345']
+    passwd=['root','123456','admin','','12345','111111','password','123123','1234','12345678','123456789','696969',
+            'abc123','qwerty']
     for i in passwd:
         try:
             con= MySQLdb.connect(host=ip,port=int(port),user='root',passwd=i)
@@ -34,6 +35,7 @@ def mysql(ip='',port='3306',name=''):
                 keywords='mysql'
                 hackinfo=str(e)
                 print e,e[0]
+                break;
             
         finally:
             if con !=None:

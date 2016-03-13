@@ -123,7 +123,8 @@ if __name__ == "__main__":
 	workdetail.append(workitem)
 	params={}
 	params['workdetail']=workdetail
-	w=p.getHTML('http://127.0.0.1:80/nmaptool/uploadipinfo/',way='POST',params=params)
+# 	w=p.getHTML('http://127.0.0.1:80/nmaptool/uploadipinfo/',way='POST',params=params)
+	w=p.getHTML('http://www.baidu.com/',way='GET')
  	print w
 	
 	

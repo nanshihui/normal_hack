@@ -19,7 +19,7 @@ def getObject():
         getlocationtaskinstance=GetLocationTask(1)
     return getlocationtaskinstance
 def getlocationjsondata(jsondata):
-    print jsondata
+#     print jsondata
     if jsondata.get('code','1')==0:
         country=jsondata['data'].get('country','0')
         country_id=str(jsondata['data'].get('country_id','0'))

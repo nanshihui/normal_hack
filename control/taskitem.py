@@ -3,13 +3,13 @@
 from spidertool import zmaptool,iptask
 import random
 from datetime import datetime
-operator = {'6':'3306','1':'80','2':'8080','3':'443','4':'22','5':'21','7':'873'} 
+operator = {'6':'3306','1':'80','2':'8080','3':'443','4':'22','5':'21','7':'873','8':'22'} 
 def text():
     print('Tick! The time is: %s' % datetime.now())
 def tick():
-    num=random.randint(1, 1)
+    num=random.randint(6, 6)
 
-    temp=zmaptool.Zmaptool()
+    temp=zmaptool.getObject()
     
     temp.do_scan(port=operator.get(str(num)),num='12',needdetail='1')
     print('Tick! The time is: %s' % datetime.now())
@@ -18,7 +18,7 @@ def zmaptask():
 
     temp=zmaptool.Zmaptool()
     
-    temp.do_scan(port=operator.get(str(num)),num='30')
+    temp.do_scan(port=operator.get(str(num)),num='20')
     print('Tick! The time is: %s' % datetime.now())
 def listiptask():
     listitem=iptask.getObject()
