@@ -40,6 +40,7 @@ class PortscanTask(TaskTool):
             return ''
         ip=req[1]
         port=req[2]
+        productname=req[4]
         head=None
         ans=None
         hackinfo=''
@@ -56,9 +57,10 @@ class PortscanTask(TaskTool):
             print address
             head,ans = self.connectpool.getConnect(address)
             from template_identify import page_identify
-            keywords,hackinfo=page_identify.identify_main(head=head,context=ans,ip=ip,port=port)
+            keywords,hackinfo=page_identify.identify_main(head=head,context=ans,ip=address,port=port,productname=productname)
         else:
-            head,ans,keywords,hackinfo=self.portscan.do_scan(ip,port,req[0])
+            head,ans,keywords,hackinfo=self.portscan.do_scan(ip,port,req[0],productname=productname)
+        
 #         print ans
 #         self.sqlTool.connectdb()
         localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
