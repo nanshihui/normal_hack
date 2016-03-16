@@ -5,4 +5,4 @@ if __name__ == '__main__':
 
     logger = initLog('WebDect.log', 2, True)
     a=default.PocController(logger=logger)
-    a.detect(site=None, resp=None, roots=None, mode=None) 
+    a.detect(head='',context='',ip='',port='',productname='',keywords='',hackinfo='') 

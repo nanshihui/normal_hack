@@ -31,12 +31,16 @@ encoding//spidertool/template_identify/httpdect/webdection/plugin/framework/expr
 encoding//spidertool/template_identify/httpdect/webdection/plugin/framework/kraken.py=utf-8
 encoding//spidertool/template_identify/httpdect/webdection/plugin/frontend/bootstrap.py=utf-8
 encoding//spidertool/template_identify/httpdect/webdection/plugin/waf/360webscan.py=utf-8
+encoding//spidertool/template_identify/httpdect/webdection/plugin/webapp/manage/__init__.py=utf-8
+encoding//spidertool/template_identify/httpdect/webdection/plugin/webapp/manage/phpmyadmin.py=utf-8
 encoding//spidertool/template_identify/page_identify.py=utf-8
 encoding//spidertool/template_identify/plugins/port_template.py=utf-8
 encoding//spidertool/template_identify/plugins/sshdeal.py=utf-8
 encoding//spidertool/template_identify/poc_file/lib/logger.py=utf-8
+encoding//spidertool/template_identify/poc_file/plugins/callbackresult.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/component/elasticsearch/elasticsearch_groovy.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/component/elasticsearch/t.py=utf-8
+encoding//spidertool/template_identify/poc_file/plugins/component/struts/testitem.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/default.py=utf-8
 encoding//spidertool/template_identify/poc_file/pocdect.py=utf-8
 encoding//spidertool/template_identify/port_func.py=utf-8

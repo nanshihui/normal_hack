@@ -61,8 +61,7 @@ class PortscanTask(TaskTool):
         else:
             head,ans,keywords,hackinfo=self.portscan.do_scan(ip,port,req[0],productname=productname)
         
-#         print ans
-#         self.sqlTool.connectdb()
+
         localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
         insertdata=[]
         temp=str(ans)
