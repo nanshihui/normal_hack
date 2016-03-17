@@ -13,6 +13,7 @@ import gc
 import ssl
 import chardet
 from Queue import Queue
+import json
 WEBCONFIG=webconfig.WebConfig
 class ConnectTool:
 	def  __init__(self,WEBCONFIG=WEBCONFIG,debuglevel=0):
@@ -41,29 +42,34 @@ class ConnectTool:
 		else:
 			self.__opener=urllib2.build_opener(self.__encoding_support,self.__httpcookieprocessor,self.__null_proxy_handler,self.__httpHandler,self.__httpsHandler,self.__RedirectHandler)
 		urllib2.install_opener(self.__opener)
-
-	def  getHTML(self,URL,way='GET',params={},times=1):
+	def  getHTML(self,URL='',way='GET',params={},times=1,header=None,type=''):
 		print datetime.datetime.now()
-		data = urllib.urlencode(params)
-
+		if type=='':
+			
+			data = urllib.urlencode(params)
+		if type=='JSON':
+			data=json.dumps(params) 
+		print data 
 		url=URL
-
+		if header is None:
+			header=self.__headers
 		if way=='POST':
-			req = urllib2.Request(url, data=data, headers=self.__headers)
+			req = urllib2.Request(url, data=data, headers=header)
 
 
 		elif len(params)==0:
-			req= urllib2.Request(url,headers=self.__headers)
+			req= urllib2.Request(url,headers=header)
 
 
 		else :
-			req= urllib2.Request(url+'?'+data,headers=self.__headers)
+			req= urllib2.Request(url+'?'+data,headers=header)
 
 		response=None
 		try:
 #			gc.enable() 
 #			gc.set_debug(gc.DEBUG_LEAK)
 			context = ssl._create_unverified_context()
+
 			response = urllib2.urlopen(req,context=context)
 
 			temp=str(response.info())
@@ -71,12 +77,13 @@ class ConnectTool:
 # 			for item in self.__cookie:
 # 				print 'Name = '+item.name
 # 				print 'Value = '+item.value
+
 			msg=response.read()
 			
 			chardit1 = chardet.detect(msg)
 			the_page = str(msg)
 
-			
+
 
 			
 			try:
@@ -89,6 +96,8 @@ class ConnectTool:
 #		print 'head is %s' % response.info()
 
 		except Exception,e:
+			if response is not None:
+				print response.info()
 			msgg=None
 			try:
 				msgg= '错误码为: %s' % str(e).encode('utf-8')

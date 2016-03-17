@@ -5,5 +5,5 @@ from ..t import T
 class P(T):
     def __init__(self):
         T.__init__(self)
-        keywords=['elasticsearch']
+        keywords=['struts']
         print 'strute init'

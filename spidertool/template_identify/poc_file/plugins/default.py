@@ -9,8 +9,6 @@ from re import compile
 import callbackresult
 
 
-title_regex = compile('<title[^<>]*>([\s\S]*?)<\\?/title>', 2)
-meta_regex = compile('<meta\s+[^<>]*?content=["\']([^"\']*?)["\']', 2)
 
 class PocController(object):
     def __init__(self, logger=None):
@@ -92,38 +90,38 @@ class PocController(object):
         modules_list = []
         
         
-        modules_list, _ = self.__match_modules_by_keywords('', self.result)
+        modules_list, _ = self.__match_modules_by_keywords(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords)
         
         for modules,conponent in modules_list:
             for item in self.components[conponent][modules]:
                 P=item()
                 POCS.append(P)
                 self.logger and self.logger.info('Init Plugin: %s', item)
-        self.match_POC(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo,POCS, **kw)
-    def match_POC(self,head='',context='',ip='',port='',productname='',keywords='',hackinfo='',POCS, **kw):
+        self.match_POC(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo,POCS=POCS, **kw)
+    def match_POC(self,head='',context='',ip='',port='',productname='',keywords='',hackinfo='',POCS=None, **kw):
+        haveresult=False
         for poc in POCS:
-            p,result = poc.verify(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo)
-            if p:
-                print result
-                
-                
-#                 callbackresult.storedata(ip=ip,port=port,hackinfo)
-        
-                pass
-    def __match_modules_by_keywords(self,resp, result):
+
+            result = poc.verify(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo)
+
+
+            if result['result']:
+                haveresult=callbackresult.storedata(ip=ip,port=port,hackinfo=result)
+                print '发现漏洞'
+                break;
+
+
+        if haveresult == False:
+            print '-----------------------'
+            print '暂未发现相关漏洞'
+    def __match_modules_by_keywords(self,head='',context='',ip='',port='',productname='',keywords=''):
         matched_modules = []
         othermodule=[]
 #         for module_name in self.components.keys():
 #             othermodule.extend(self.components[module_name].keys())
 
+        kw=keywords#关键词
 
-
-
-#         titles = ','.join(title_regex.findall(resp.text)).lower()
-#         metas = ','.join(meta_regex.findall(resp.text)).lower()
-        kw='elasticsearch123'
-#         kw = (titles + metas).encode('utf-8')
-#         self.logger and self.logger.info('Site Keywords: %s -> %s', resp.url, kw)
         for module_name, module_info in self.keywords.items():
 
             keywords=module_info[0]
@@ -132,7 +130,9 @@ class PocController(object):
                 matched_modules.append([module_name,comonentname])
                 continue
             for keyword in keywords:
-                if keyword in kw:
+                if keyword in kw or keyword in productname.lower()  or keyword in head.lower()   :
+                    
+                    
 #                     self.logger and self.logger.info('Match Keyword: %s -> %s', resp.url, keyword)
                     matched_modules.append([module_name,comonentname])
                     break
