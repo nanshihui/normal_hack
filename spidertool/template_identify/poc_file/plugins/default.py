@@ -42,8 +42,6 @@ class PocController(object):
         modules_list = set(map(lambda item: isdir(join(path, item)) and item, listdir(path)))
         if False in modules_list:
             modules_list.remove(False)
-
-
         return modules_list
     def __load(self, module_name, plugin_name):
 
@@ -92,14 +90,29 @@ class PocController(object):
     def loader(self):
         self.components = {}
         self.__load_component_plugins(map(lambda module_info: module_info['module_name'], self.modules_list))
-    def env_init(self, head='',context='',ip='',port='',productname='',keywords='',hackinfo=''):
-        self.init(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo)
-    def init(self,  head='',context='',ip='',port='',productname='',keywords='',hackinfo='', **kw):
+    def env_init(self, head='',context='',ip='',port='',productname='',keywords='',hackinfo='',defaultpoc=''):
+        self.init(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo,defaultpoc=defaultpoc)
+    def __match_modules_by_poc(self,head='',context='',ip='',port='',productname='',keywords='',defaultpoc=''):
+        matched_modules = set()
+        othermodule=[]
+
+        for components_name in self.components.keys():
+            for module_name in self.components[components_name].keys():
+                if module_name in defaultpoc:
+                    matched_modules.add((module_name,components_name))
+
+
+        return matched_modules, othermodule
+    def init(self,  head='',context='',ip='',port='',productname='',keywords='',hackinfo='', defaultpoc='',**kw):
         POCS = []
         modules_list = []
         
-        
-        modules_list, _ = self.__match_modules_by_info(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords)
+        if defaultpoc=='':
+            modules_list, _ = self.__match_modules_by_info(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords)
+        else:
+            
+            modules_list, _ = self.__match_modules_by_poc(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,defaultpoc=defaultpoc)
+
         for modules,conponent in modules_list:
             for item in self.components[conponent][modules]:
                 P=item()
@@ -145,7 +158,6 @@ class PocController(object):
 #             othermodule.extend(self.components[module_name].keys())
 
         kw=keywords#关键词
-
         for module_name, module_info in self.keywords.items():
             modulekeywords=module_info[0]
             comonentname=module_info[1]
@@ -184,10 +196,10 @@ class PocController(object):
 
 
 
-    def detect(self, head='',context='',ip='',port='',productname='',keywords='',hackinfo=''):
+    def detect(self, head='',context='',ip='',port='',productname='',keywords='',hackinfo='',defaultpoc=''):
 
 
-        self.env_init(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo)
+        self.env_init(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo,defaultpoc=defaultpoc)
 
         return
 

@@ -57,7 +57,7 @@ class PortscanTask(TaskTool):
             print address
             head,ans = self.connectpool.getConnect(address)
             from template_identify import page_identify
-            keywords,hackinfo=page_identify.identify_main(head=head,context=ans,ip=address,port=port,productname=productname)
+            keywords,hackinfo=page_identify.identify_main(head=head,context=ans,ip=ip,port=port,productname=productname,protocol=req[0])
         else:
             head,ans,keywords,hackinfo=self.portscan.do_scan(ip,port,req[0],productname=productname)
         

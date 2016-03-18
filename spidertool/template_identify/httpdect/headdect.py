@@ -2,13 +2,14 @@
 #coding:utf-8
 from webdection import main
 
-def dect(head='',context='',ip='',port=''):
+def dect(head='',context='',ip='',port='',protocol=''):
 #     webdection
     keywords=''
     hackinfo=''
     if port =='443':
         w = main.getwebinfo(ip,1)
     else:
+        ip=protocol+'://'+ip
         w = main.getwebinfo(ip,0)
     keywords= str(w)
     print keywords
