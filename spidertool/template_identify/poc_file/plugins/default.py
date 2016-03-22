@@ -9,12 +9,12 @@ from re import compile
 import callbackresult
 
 
-
 class PocController(object):
     def __init__(self, logger=None):
         self.modules_list = [
 
                 {'module_name': 'component'},
+                 {'module_name': 'middileware'}
  ]
 
 
@@ -108,7 +108,7 @@ class PocController(object):
         modules_list = []
         
         if defaultpoc=='':
-            modules_list, _ = self.__match_modules_by_info(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords)
+            modules_list, _ = self.__match_modules_by_info(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo)
         else:
             
             modules_list, _ = self.__match_modules_by_poc(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,defaultpoc=defaultpoc)
@@ -116,10 +116,11 @@ class PocController(object):
         for modules,conponent in modules_list:
             for item in self.components[conponent][modules]:
                 P=item()
-                
-                if self.__match_rules(pocclass=P,head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo, **kw):
-                    POCS.append(P)
-                
+                try:
+                    if self.__match_rules(pocclass=P,head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo, **kw):
+                        POCS.append(P)
+                except Exception,e:
+                    self.logger and self.logger.info('error: %s', e)
                 
                 
                 
@@ -127,18 +128,23 @@ class PocController(object):
         self.match_POC(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo,POCS=POCS, **kw)
     def match_POC(self,head='',context='',ip='',port='',productname='',keywords='',hackinfo='',POCS=None, **kw):
         haveresult=False
+        dataresult=[]
+        i=0
         for poc in POCS:
 
             result = poc.verify(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo)
 
 
             if result['result']:
-                haveresult=callbackresult.storedata(ip=ip,port=port,hackinfo=result)
+                i=1
+                dataresult.append(result)
+                
                 print '发现漏洞'
-                break;
+        if i==1:
+            
+            callbackresult.storedata(ip=ip,port=port,hackinfo=dataresult)
 
-
-        if haveresult == False:
+        else:
             print '-----------------------'
             print '暂未发现相关漏洞'
     def __match_rules(self,pocclass=None,head='',context='',ip='',port='',productname='',keywords='',hackinfo='', **kw):
@@ -151,7 +157,7 @@ class PocController(object):
     
     
     
-    def __match_modules_by_info(self,head='',context='',ip='',port='',productname='',keywords=''):
+    def __match_modules_by_info(self,head='',context='',ip='',port='',productname='',keywords='',hackinfo=''):
         matched_modules = set()
         othermodule=[]
 #         for module_name in self.components.keys():
@@ -167,7 +173,7 @@ class PocController(object):
                 matched_modules.add((module_name,comonentname))
                 continue
             for keyword in modulekeywords:
-                if keyword in kw or keyword in productname.lower()  or keyword in head.lower()   :
+                if keyword in kw or keyword in productname.lower()  or keyword in head.lower() or keyword in hackinfo.lower()    :
                     
                     
 #                     self.logger and self.logger.info('Match Keyword: %s -> %s', resp.url, keyword)
@@ -179,7 +185,7 @@ class PocController(object):
 
             if not rules:
                 
-                print module_name,comonentname
+
                 matched_modules.add((module_name,comonentname))
                 continue
             if rules(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo='')  :
@@ -187,7 +193,7 @@ class PocController(object):
                     
 #                     self.logger and self.logger.info('Match Keyword: %s -> %s', resp.url, keyword)
                     matched_modules.add((module_name,comonentname))
-                    break
+                    
 # 
 #         for match in matched_modules:
 #             othermodule.remove(match)

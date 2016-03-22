@@ -20,6 +20,7 @@ class Portscantool:
         keywords=name
         hackinfo=''
         reply=''
+        self.socketclient=None
         try:
             head,ans,keywords,hackinfo=port_identify.port_deal(ip=ip,port=port,name=name,productname=productname)
             if ans==None:
@@ -37,7 +38,9 @@ class Portscantool:
         except Exception, msg:
             print 'Failed to create socket. Error code: ' + str(msg)
             return 'error info:','error',keywords,hackinfo
-
+        finally:
+            if self.socketclient is not None:
+                self.socketclient.close()
    
 if __name__ == "__main__":
     temp=Portscantool()
