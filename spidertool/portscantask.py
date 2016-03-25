@@ -60,7 +60,7 @@ class PortscanTask(TaskTool):
             from template_identify import page_identify
             keywords,hackinfo=page_identify.identify_main(head=head,context=ans,ip=ip,port=port,productname=productname,protocol=req[0],nmapscript=nmapscript)
         else:
-            head,ans,keywords,hackinfo=self.portscan.do_scan(ip,port,req[0],productname=productname)
+            head,ans,keywords,hackinfo=self.portscan.do_scan(head=head,context=ans,ip=ip,port=port,name=req[0],productname=productname,nmapscript=nmapscript)
         
 
         localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))

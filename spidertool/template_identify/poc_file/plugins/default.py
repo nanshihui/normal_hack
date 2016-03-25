@@ -112,7 +112,7 @@ class PocController(object):
         else:
             
             modules_list, _ = self.__match_modules_by_poc(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,defaultpoc=defaultpoc)
-
+        print ' 匹配到的可能组件:      '+str(modules_list) 
         for modules,conponent in modules_list:
             for item in self.components[conponent][modules]:
                 P=item()
@@ -123,8 +123,9 @@ class PocController(object):
                     self.logger and self.logger.info('error: %s', e)
                 
                 
-                
+        
                 self.logger and self.logger.info('Init Plugin: %s', item)
+        print ' 要执行筛选的组件:      '+str(POCS) 
         self.match_POC(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo=hackinfo,POCS=POCS, **kw)
     def match_POC(self,head='',context='',ip='',port='',productname='',keywords='',hackinfo='',POCS=None, **kw):
         haveresult=False
@@ -147,6 +148,7 @@ class PocController(object):
         else:
             print '-----------------------'
             print '暂未发现相关漏洞'
+        del POCS
     def __match_rules(self,pocclass=None,head='',context='',ip='',port='',productname='',keywords='',hackinfo='', **kw):
 
         return pocclass.match_rule(head='',context='',ip='',port='',productname='',keywords='',hackinfo='', **kw)
@@ -162,6 +164,12 @@ class PocController(object):
         othermodule=[]
 #         for module_name in self.components.keys():
 #             othermodule.extend(self.components[module_name].keys())
+        if productname ==None:
+            productname=''
+        if head ==None:
+            head=''
+        if hackinfo ==None:
+            hackinfo=''
 
         kw=keywords#关键词
         for module_name, module_info in self.keywords.items():
@@ -189,15 +197,12 @@ class PocController(object):
                 matched_modules.add((module_name,comonentname))
                 continue
             if rules(head=head,context=context,ip=ip,port=port,productname=productname,keywords=keywords,hackinfo='')  :
+                     
+                     
+                matched_modules.add((module_name,comonentname))
+#             matched_modules.add((module_name,comonentname))
                     
-                    
-#                     self.logger and self.logger.info('Match Keyword: %s -> %s', resp.url, keyword)
-                    matched_modules.add((module_name,comonentname))
-                    
-# 
-#         for match in matched_modules:
-#             othermodule.remove(match)
-#         print othermodule
+
         return matched_modules, othermodule
 
 

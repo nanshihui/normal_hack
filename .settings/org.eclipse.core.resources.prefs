@@ -68,6 +68,7 @@ encoding//spidertool/template_identify/poc_file/plugins/middileware/tomcat/t.py=
 encoding//spidertool/template_identify/poc_file/plugins/middileware/tomcat/tomcat_crackpass.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/middileware/weblogic/t.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/middileware/weblogic/weblogic_crackpass.py=utf-8
+encoding//spidertool/template_identify/poc_file/plugins/middileware/zabbix/zabbix_sqlhack.py=utf-8
 encoding//spidertool/template_identify/poc_file/pocdect.py=utf-8
 encoding//spidertool/template_identify/poc_file/pocsearchtask.py=utf-8
 encoding//spidertool/template_identify/port_func.py=utf-8
