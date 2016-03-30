@@ -1,37 +1,39 @@
 #!/usr/bin/env python
 # encoding: utf-8
-from spidertool import Sqldatatask,Sqldata,SQLTool
+from spidertool import Sqldatatask,Sqldata,SQLTool,webconfig
 import spidertool.config as config
-
+from model import uploaditem
 import time
-# islocalwork=config.Config.islocalwork
-def storedata(ip='',port='',hackinfo=None):
-    sqlTool=Sqldatatask.getObject()
+from worker import uploadtask
+islocalwork=config.Config.islocalwork
+def storedata(ip='',port='',hackinfo=None,islocalwork=config.Config.islocalwork):
+    
     localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
     insertdata=[]
-#     if islocalwork==0:
-#         work=[]
-#         dic={"table":config.Config.iptable,"select_params": ['ip','vendor','osfamily','osgen','accurate','updatetime','hostname','state'],"insert_values": [(temphosts,tempvendor,temposfamily,temposgen,tempaccuracy,localtime,temphostname,tempstate)]}
-#         tempdata={"func":'replaceinserttableinfo_byparams',"dic":dic}
-#         jsondata=uploaditem.UploadData(url=self.webconfig.upload_ip_info,way='POST',params=tempdata)
-#         work.append(jsondata)
-#         self.uploadwork.add_work(work)
-                    
-#     else:
-
     hackinfo=SQLTool.escapewordby(str(hackinfo))
     extra=' on duplicate key update  hackinfo=\''+hackinfo+'\' , timesearch=\''+localtime+'\''
              
     insertdata.append((str(ip),port,hackinfo,str(port)))
  
  
-    sqldatawprk=[]
+    
     dic={"table":config.Config.porttable,"select_params":['ip','port','hackinfo','portnumber'],"insert_values":insertdata,"extra":extra}
                 
-    tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
-    sqldatawprk.append(tempwprk)
-    sqlTool.add_work(sqldatawprk)   
-    pass
+    if islocalwork==0:
+        work=[]
+        tempdata={"func":'inserttableinfo_byparams',"dic":dic}
+        jsondata=uploaditem.UploadData(url=webconfig.WebConfig.upload_ip_info,way='POST',params=tempdata)
+        work.append(jsondata)
+        temp=uploadtask.getObject()
+        temp.add_work(work)
+                     
+    else:
+        sqlTool=Sqldatatask.getObject()
+        sqldatawprk=[]
+        tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
+        sqldatawprk.append(tempwprk)
+        sqlTool.add_work(sqldatawprk)   
+    
 def storeresult(result=None):
     print '----------------------------------------'
     print '发现漏洞'
@@ -40,5 +42,3 @@ def storeresult(result=None):
     print 'payload:'+result['VerifyInfo']['payload']
     
     return True
-    
-    
