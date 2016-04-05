@@ -57,7 +57,8 @@
 /include/fckeditor             {severity=2}
 /plugins/editors/fckeditor     {severity=2}
 /plugins/fckeditor             {severity=2}
-
+/comm/admin/FCKeditor/editor/filemanager/browser/default/browser.html?&connector=../../connectors/aspx/connector.aspx  {severity=2}
+/_web/monitor/remoteDebug.do?_p=YXM9MSZ0PTI4JnA9MSZtPU4m&tt=0.06622753707913736&command=id {severity=2}
 
 # Tomcat Examples
 /examples           {severity=2}
@@ -68,8 +69,8 @@
 # Database
 /db/       {severity=2}
 /DB/       {severity=2}
-/data/	   {severity=2}
-/DATA/	   {severity=2}
+/data/     {severity=2}
+/DATA/     {severity=2}
 /database/ {severity=2}
 /DATABASE/ {severity=2}
 /sqladm    {severity=2} 
@@ -121,7 +122,7 @@
 /jira/           {severity=2}
 /nagios/         {severity=2}
 /kibana/         {severity=2}
-/jenkins/	 {severity=2}  {status=200}
+/jenkins/    {severity=2}  {status=200}
 /memadmin/index.php      {tag="MemAdmin"}
 /phpmyadmin/index.php    {tag="phpMyAdmin"}    {status=200}
 /_phpmyadmin/index.php   {tag="phpMyAdmin"}    {status=200}
@@ -164,7 +165,7 @@
 /bbs/.config.inc.php.swp               {status=200}
 
 
-/access.log        {status=200}	    {type_no="html"}
+/access.log        {status=200}     {type_no="html"}
 /error.log         {status=200}     {type_no="html"}
 /errors.log        {status=200}     {type_no="html"}
 /debug.log         {status=200}     {type_no="html"}
@@ -188,6 +189,8 @@
 /httpd.conf             {status=200}
 /id_dsa                 {status=200}
 /Web.config             {status=200}
+/cgi-bin/test.cgi             {status=200}
+/cgi-bin/php.cgi             {status=200}
 
 
 # webshell
@@ -215,7 +218,7 @@
 /s.php                  {status=200}
 /browser.jsp            {status=200}
 /JFolder.jsp            {status=200}
-/one.jsp		{status=200}
+/one.jsp        {status=200}
 
 
 
@@ -238,9 +241,9 @@
 /db.tgz                 {status=200}    {type_no="html"}
 /db.tar.bz2             {status=200}    {type_no="html"}
 /db.log                 {status=200}    {type_no="html"}
-/db.inc                 {status=200}	{type_no="html"}
+/db.inc                 {status=200}    {type_no="html"}
 /db.sqlite              {status=200}    {type_no="html"}
-/db.7z	                {status=200}    {type_no="html"}
+/db.7z                  {status=200}    {type_no="html"}
 
 /data.zip               {status=200}    {type_no="html"}
 /data.rar               {status=200}    {type_no="html"}
@@ -395,7 +398,7 @@
 /.svn/text-base/
 /.git/config          {status=200}     {type_no="html"}
 /.git/index           {status=200}     {type_no="html"}
-/.git/HEAD	      {status=200}
+/.git/HEAD        {status=200}
 /CVS/Root             {status=200}     {type_no="html"}
 
 
@@ -426,12 +429,12 @@
 /install.txt          {status=200}      {type_no="html"}
 /INSTALL.TXT          {status=200}      {type_no="html"}
 /config.php           {status=200}
-/config.inc           {status=200}	{type_no="html"}
+/config.inc           {status=200}  {type_no="html"}
 /config.ini           {status=200}      {type_no="html"}
 /configuration.ini    {status=200}      {type_no="html"}
-/settings.php         {status=200}	
+/settings.php         {status=200}  
 /settings.ini         {status=200}      {type_no="html"}
-/database.csv         {status=200}	{type_no="html"}
+/database.csv         {status=200}  {type_no="html"}
 /database.inc         {status=200}      {type_no="html"}
 /database.log         {status=200}      {type_no="html"}
 /fantastico_fileslist.txt    {status=200}     {type_no="html"}
@@ -445,6 +448,6 @@
 /password.txt                {status=200}    {type_no="html"}
 /php.ini                     {status=200}    {type_no="html"}
 /robots.txt                  {status=200}    {type_no="html"}
-/sftp-config.json	     {status=200}    {type_no="html"}   {tag="password"}
-/memadmin/index.php	     {status=200}    {tag="MemAdmin"}
-/login			     {status=200}    {tag="<title>Jenkins</title>"}
+/sftp-config.json        {status=200}    {type_no="html"}   {tag="password"}
+/memadmin/index.php      {status=200}    {tag="MemAdmin"}
+/login               {status=200}    {tag="<title>Jenkins</title>"}

@@ -2,6 +2,7 @@
 #coding:utf-8
 from httpdect import headdect
 from poc_file import pocsearchtask
+from fluzzdetect import fuzztask
 import gc,objgraph
 def identify_main(head='',context='',ip='',port='',productname='',protocol='',nmapscript=''):
     keywords=''
@@ -11,6 +12,8 @@ def identify_main(head='',context='',ip='',port='',productname='',protocol='',nm
 #     objgraph.show_growth()
     
     keywords,hackinfo=headdect.dect(head=head,context=context,ip=ip,port=port,protocol=protocol)
+    fuz=fuzztask.getObject()
+    fuz.add_work([(head,context,ip,port,productname,keywords,nmapscript,protocol)])
     temp=pocsearchtask.getObject()
     temp.add_work([(head,context,ip,port,productname,keywords,nmapscript,protocol)])
      
