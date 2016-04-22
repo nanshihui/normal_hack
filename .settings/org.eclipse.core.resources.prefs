@@ -20,6 +20,7 @@ encoding//spidertool/scapytool.py=utf-8
 encoding//spidertool/searchTask.py=utf-8
 encoding//spidertool/template_identify/component_func.py=utf-8
 encoding//spidertool/template_identify/fluzzdetect/callbackfuzz.py=utf-8
+encoding//spidertool/template_identify/fluzzdetect/fuzztask.py=utf-8
 encoding//spidertool/template_identify/httpdect/headdect.py=utf-8
 encoding//spidertool/template_identify/httpdect/systemdect.py=utf-8
 encoding//spidertool/template_identify/httpdect/webdection/__init__.py=utf-8

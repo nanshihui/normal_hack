@@ -10,6 +10,6 @@
 * worker 工作实体类
 
 ### 注意事项
-* 程序入口在worker里面的workerfactory.py
+* 程序入口在main.py
 * 需要安装nmap
 * PS:if want to help with me to complete this project ...please fork it ^_^  

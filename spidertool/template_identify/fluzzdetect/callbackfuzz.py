@@ -34,7 +34,7 @@ def storedata(ip='',port='',hackinfo=None):
   
         sqldatawprk=[]
                  
-        tempwprk=Sqldata.SqlData(func='inserttableinfo_byparams',dic)
+        tempwprk=Sqldata.SqlData('inserttableinfo_byparams',dic)
         sqldatawprk.append(tempwprk)
         sqlTool.add_work(sqldatawprk)   
         print 'fuzz 数据存储'
