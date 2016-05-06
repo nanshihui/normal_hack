@@ -366,13 +366,6 @@ class DBmanager:
 def formatstring(str):
 	return '\''+str+'\''
 def escapeword(word):
-	msg=''
-	if word is not None:
-		msg=str(word).replace("'","&apos;")
-	else:
-		msg=''
-	return msg
-def escapewordby(word):
 	if word is None:
 		return ''
 	else:
@@ -380,6 +373,7 @@ def escapewordby(word):
 		content=''
 		content = str(MySQLdb.escape_string(str(word)))
 		return content
+
 if __name__ == "__main__":
 	SQLtool=DBmanager()
 	SQLtool.connectdb()

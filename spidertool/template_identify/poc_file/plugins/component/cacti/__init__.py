@@ -1,5 +1,9 @@
-KEYWORDS = ['ftp', ]
+KEYWORDS = ['cacti', ]
 def rules(head='',context='',ip='',port='',productname={},keywords='',hackinfo=''):
-    if port=='21':
+    
+    
+    if 'Cacti' in context :
         return True
-    return False
+    else:
+
+        return False
