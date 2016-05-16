@@ -16,7 +16,6 @@ import spidertool.Sqldatatask as Sqldatatask
 import spidertool.config as config
 import spidertool.webconfig as webconfig
 import spidertool.Sqldata as Sqldata
-from numpy.numarray.numerictypes import IsType
 import spidertool.connectpool as connectpool
 import spidertool.portscantask as portscantask
 

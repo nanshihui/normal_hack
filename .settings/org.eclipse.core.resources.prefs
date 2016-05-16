@@ -48,7 +48,6 @@ encoding//spidertool/template_identify/poc_file/plugins/callbackresult.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/component/elasticsearch/elasticsearch_groovy.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/component/elasticsearch/elasticsearch_nodestate.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/component/elasticsearch/t.py=utf-8
-encoding//spidertool/template_identify/poc_file/plugins/component/struts/testitem.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/component/t.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/default.py=utf-8
 encoding//spidertool/template_identify/poc_file/plugins/middileware/axis/axis_config_read.py=utf-8
