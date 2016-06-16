@@ -6,7 +6,10 @@ import time
 import datetime
 from MySQLdb.cursors import DictCursor
 from DBUtils.PooledDB import PooledDB
-import debugdetail as Debug
+
+import sys;
+reload(sys);
+sys.setdefaultencoding('utf8');
 DBhelp=None
 SQLPOOL=None
 def getObject():
@@ -39,6 +42,8 @@ class DBmanager:
 		self.__cachemin=temp.cachemin
 		self.__conn=None
 		self.__cur=None
+		self.logger = None
+
 	def getConnect(self):
 		global SQLPOOL
 		if SQLPOOL is None:
@@ -83,6 +88,7 @@ class DBmanager:
 	#@select_params				要显示的列名，数组
 	#@request_params     		条件匹配参数，数组
 	#@equal_params				每一个与request_params对应相等的数组
+	@classmethod
 	def isdisconnect(self,e):
 		if 'MySQL server has gone away' in str(e) or 'cursor closed' in  str(e) or 'Lost connection to MySQL server during query' in str(e):
 			return True
@@ -123,7 +129,7 @@ class DBmanager:
 					sql+=' order by '+order
 				sql+=limit
 				sql+=''
-# 				print sql
+				print sql
 				count=None
 				try:
 					if self.__cur is not None:
@@ -137,8 +143,10 @@ class DBmanager:
 							self.connectdb()
 							count=self.__cur.execute(sql)
 						else:
-							debug=Debug.getObject()
-							debug.error(str(e))
+
+							self.logger and self.logger.error('数据库错误%s',str(e))
+
+
 							return (0,0,0,0)
 					except Exception,e:
 						return (0,0,0,0)
@@ -196,8 +204,8 @@ class DBmanager:
 					sql=sql+'%s'+')'			
 				else:
 					return False
-				print insert_values
-				print sql
+
+# 				print sql
 				returnmeg=None
 				try:
 					returnmeg=self.__cur.executemany(sql,insert_values)
@@ -223,8 +231,7 @@ class DBmanager:
 							self.__conn.commit()
 							return True
 						else:
-							debug=Debug.getObject()
-							debug.error(str(e))
+							self.logger and self.logger.error('数据库错误%s',str(e))
 							return False
 					except Exception,e:
 						return False
@@ -284,8 +291,10 @@ class DBmanager:
 				
 							self.__conn.commit()
 						else:
-							debug=Debug.getObject()
-							debug.error(str(e))
+
+							
+							self.logger and self.logger.error('数据库错误%s',str(e))
+
 							return False
 					except Exception,e:
 						return False
@@ -295,7 +304,8 @@ class DBmanager:
 					return False
 
 			except MySQLdb.Error,e:
-				print  '操作的过程中出现异常 :' +str(e)
+
+				self.logger and self.logger.error('数据库操作的过程中出现异常 %s',str(e))
 				return False
 		else:
 			print '''has not connet'''  
@@ -328,9 +338,9 @@ class DBmanager:
 						sql=sql+updatevalue[o]+' =  %s '+'  ,'	
 					sql=sql+updatevalue[ulen-1]+'  =%s ' 
 				sql+=extra
-				print sql
+# 				print sql
 				
-				print insert_values
+				
 				returnmeg=None
 				try:
 					returnmeg=self.__cur.executemany(sql,insert_values)
@@ -340,8 +350,8 @@ class DBmanager:
 							self.connectdb()
 							returnmeg=self.__cur.executemany(sql,insert_values)
 						else:
-							debug=Debug.getObject()
-							debug.error(str(e))	
+							self.logger and self.logger.error('数据库错误%s',str(e))
+
 							return False
 					except Exception,e:
 						return False
@@ -365,15 +375,56 @@ class DBmanager:
 		#self.__conn.commit()   
 def formatstring(str):
 	return '\''+str+'\''
+import chardet	
+
 def escapeword(word):
 	if word is None:
 		return ''
 	else:
 		
 		content=''
-		content = str(MySQLdb.escape_string(str(word)))
+		content = str(MySQLdb.escape_string(str(decodestr(word))))
 		return content
+def escapewordby(word):
+	if word is None:
+		return ''
+	else:
+		
+		content=''
+		content = str(MySQLdb.escape_string(str(decodestr(word))))
+		return content
+def getproperty(dic,property):
+    return decodestring(str(dic.get(property,'')))
+def encodestring(msg):
+    if str:
+        return decodestr(msg).encode('string_escape')
+    else:
+        return '' 
 
+
+
+def decodestr(msg):
+	chardit1 = chardet.detect(msg)
+
+	try:
+		# print chardit1['encoding'], msg
+		if chardit1['encoding'] == 'utf-8':
+			return msg
+		else:
+
+			return msg.decode(chardit1['encoding']).encode('utf-8')
+
+	except Exception, e:
+		return str(msg)
+def getdecodeproperty(dic,property):
+    return decodestring(str(dic.get(property,'')))
+def decodestring(msg):
+    if str:
+
+        return decodestr(msg.decode('string_escape').decode('string_escape'))
+
+    else:
+        return ''
 if __name__ == "__main__":
 	SQLtool=DBmanager()
 	SQLtool.connectdb()

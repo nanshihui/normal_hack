@@ -26,7 +26,7 @@ class WorkFactory(object):
         self.connectpool=connectpool.getObject()
         self.maintask=sniffertask.getObject()
     def dowork(self):
-        head,work_result=self.connectpool.getConnect('http://127.0.0.1:80/nmaptool/getwork', 'GET', '')
+        head,work_result=self.connectpool.getConnect('http://127.0.0.1:82/nmaptool/getwork', 'GET', '')
         jobs=json.loads(work_result)
         if jobs['result']=='1':
             workarray=Job.Converttojobs(jobs['jobs']) 
@@ -49,9 +49,9 @@ class WorkFactory(object):
     
 
 if __name__ == "__main__":   
-#     temp=schedulecontrol()
-#     tempw=WorkFactory()
-#     temp.addschedule(tempw.dowork,'0-7','0-23','0-59','*/5')
+    # temp=schedulecontrol()
+    # tempw=WorkFactory()
+    # temp.addschedule(tempw.dowork,'0-7','0-23','0-59','*/5')
 #     while True:
 #         pass
 #     
